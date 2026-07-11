@@ -487,7 +487,7 @@ const LIBROS = [
     isbn:        "",
     copias:      1,
     disponible:  true,
-    nota:        "⚠ Consultar disponibilidad con el responsable.",
+    nota:        "",
     descripcion: "Una colección de relatos que exploran el conflicto armado guatemalteco desde perspectivas íntimas: no la del general ni la del político, sino la de las personas atrapadas en medio. Un testimonio literario de valor histórico."
   },
    {
@@ -576,7 +576,7 @@ const LIBROS = [
     editorial:   "Editorial Cultura",
     isbn:        "",
     copias:      1,
-    disponible:  false,
+    disponible:  true,
     nota:        "",
     descripcion: "Primer tomo de la obra narrativa mas ambiciosa de Enrique Noriega. Una exploracion de la historia y la identidad guatemalteca a traves de personajes que viven en la antesala de grandes cambios."
   },
@@ -591,7 +591,7 @@ const LIBROS = [
     editorial:   "Editorial Cultura",
     isbn:        "",
     copias:      1,
-    disponible:  false,
+    disponible:  true,
     nota:        "",
     descripcion: "Segundo tomo de esta obra fundamental. La historia continua explorando las tensiones sociales y politicas de Guatemala con la misma intensidad narrativa que caracteriza a Noriega."
   },
@@ -606,7 +606,7 @@ const LIBROS = [
     editorial:   "Editorial Cultura",
     isbn:        "9789993943440",
     copias:      1,
-    disponible:  false,
+    disponible:  true,
     nota:        "",
     descripcion: "Una obra monumental sobre el ave nacional de Guatemala. Noriega combina investigacion, historia y narrativa para trazar el recorrido simbolico del quetzal en la cultura guatemalteca."
   },
@@ -621,7 +621,7 @@ const LIBROS = [
     editorial:   "",
     isbn:        "",
     copias:      1,
-    disponible:  false,
+    disponible:  true,
     nota:        "",
     descripcion: "Una coleccion de coplas donde el amor y el delirio se entrelazan en versos de musicalidad popular. Cortes recupera la tradicion de la copla para hablar del alma con humor y ternura."
   },
