@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Catálogo Biblioteca Escolar — Colegio Mixto Forjador de Juventudes">
+<title>Biblioteca Escolar — Forjador de Juventudes</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📚</text></svg>">
+<style>
+
+/* ══════════════════════════════════════════
+   BIBLIOTECA ESCOLAR — stylesheet
+   Sin dependencias externas. Funciona offline.
+   ══════════════════════════════════════════ */
+
+/* ── RESET & BASE ── */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --ink:    #1a1209;
+  --paper:  #faf8f4;
+  --cream:  #f0ead8;
+  --muted:  #6b5d4a;
+  --border: #ddd5c0;
+  --navy:   #1f4e79;
+  --blue:   #2e75b6;
+  --gold:   #8b6914;
+  --goldf:  #c9a84c;
+
+  --aut: #5c3d7a; --aut-l: #f0ecf7;
+  --cie: #1a5c5c; --cie-l: #e8f5f5;
+  --cla: #7a4a00; --cla-l: #fef3e0;
+  --juv: #1a4e2a; --juv-l: #e8f5ec;
+  --mis: #4a1a4a; --mis-l: #f5e8f5;
+  --nar: #1a3a5c; --nar-l: #e8f0f8;
+  --var: #5c4a1a; --var-l: #f8f3e8;
+
+  --state-a: #2d6a2d;
+  --state-b: #2e75b6;
+  --state-d: #b06800;
+  --state-c: #8b1a1a;
+
+  --radius: 0px;
+  --shadow: 0 2px 16px rgba(26,18,9,.08);
+  --shadow-hover: 0 8px 32px rgba(26,18,9,.14);
+
+  --font-body: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-serif: Georgia, 'Times New Roman', serif;
+  --font-mono: 'Courier New', Courier, monospace;
+}
+
+html { scroll-behavior: smooth; }
+body { font-family: var(--font-body); background: var(--paper); color: var(--ink); line-height: 1.6; font-size: 16px; }
+
+/* ── HEADER ── */
+.site-header {
+  background: var(--navy);
+  padding: 40px 40px 36px;
+  position: relative;
+  overflow: hidden;
+}
+.site-header::before {
+  content: '';
+  position: absolute; inset: 0;
+  background:
+    repeating-linear-gradient(0deg, transparent, transparent 47px, rgba(201,168,76,.06) 48px),
+    repeating-linear-gradient(90deg, transparent, transparent 47px, rgba(201,168,76,.06) 48px);
+  pointer-events: none;
+}
+.site-header::after {
+  content: '';
+  position: absolute; bottom: 0; left: 0; right: 0; height: 4px;
+  background: linear-gradient(90deg, var(--goldf), #f0d080 50%, var(--goldf));
+}
+.header-inner {
+  position: relative; max-width: 1200px; margin: 0 auto;
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 24px; flex-wrap: wrap;
+}
+.header-left { display: flex; align-items: center; gap: 20px; }
+.header-emoji { font-size: 2.8rem; line-height: 1; }
+.header-left h1 {
+  font-family: var(--font-serif);
+  font-size: clamp(1.8rem, 4vw, 2.8rem);
+  color: #fff; line-height: 1.1; margin-bottom: 4px;
+}
+.header-left h1 em { color: var(--goldf); font-style: italic; }
+.header-sub { color: rgba(255,255,255,.5); font-size: .82rem; letter-spacing: .05em; }
+.header-stats { display: flex; gap: 2px; flex-shrink: 0; }
+.stat {
+  background: rgba(255,255,255,.06);
+  border: 1px solid rgba(201,168,76,.2);
+  padding: 12px 18px; text-align: center; min-width: 72px;
+}
+.stat-num { display: block; font-family: var(--font-mono); font-size: 1.35rem; font-weight: bold; color: var(--goldf); }
+.stat-label { display: block; font-size: .62rem; color: rgba(255,255,255,.4); text-transform: uppercase; letter-spacing: .14em; margin-top: 2px; }
+
+/* ── INFO BANNER ── */
+.info-banner {
+  background: var(--cream); border-bottom: 1px solid var(--border);
+  padding: 10px 40px; text-align: center;
+  font-size: .82rem; color: var(--muted); letter-spacing: .02em;
+}
+
+/* ── CONTROLS ── */
+.controls {
+  background: white; border-bottom: 1px solid var(--border);
+  padding: 14px 40px; position: sticky; top: 0; z-index: 200;
+  box-shadow: 0 2px 8px rgba(26,18,9,.06);
+}
+.controls-inner {
+  max-width: 1200px; margin: 0 auto;
+  display: flex; gap: 10px; align-items: center; flex-wrap: wrap;
+}
+.search-wrap { position: relative; flex: 1; min-width: 200px; }
+.search-icon {
+  position: absolute; left: 10px; top: 50%;
+  transform: translateY(-50%); font-size: .85rem; pointer-events: none;
+}
+.search-wrap input {
+  width: 100%; padding: 9px 12px 9px 32px;
+  border: 1px solid var(--border); background: var(--paper);
+  font-family: var(--font-body); font-size: .875rem; color: var(--ink);
+  outline: none; transition: border-color .15s;
+}
+.search-wrap input:focus { border-color: var(--blue); background: white; }
+.filters { display: flex; gap: 5px; flex-wrap: wrap; }
+.filter-btn {
+  padding: 6px 13px; border: 1px solid var(--border);
+  background: white; font-family: var(--font-body);
+  font-size: .76rem; color: var(--muted); cursor: pointer;
+  letter-spacing: .02em; transition: all .12s; white-space: nowrap;
+}
+.filter-btn:hover { border-color: var(--navy); color: var(--navy); }
+.filter-btn.active { background: var(--navy); color: white; border-color: var(--navy); }
+.count-label {
+  font-family: var(--font-mono); font-size: .76rem;
+  color: var(--muted); margin-left: auto; white-space: nowrap;
+  flex-shrink: 0;
+}
+
+/* ── MAIN & GRID ── */
+.main { max-width: 1200px; margin: 0 auto; padding: 32px 40px 80px; }
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+  gap: 20px;
+}
+
+/* ── CARD ── */
+.card {
+  background: white; border: 1px solid var(--border);
+  display: flex; flex-direction: column;
+  transition: box-shadow .2s, transform .2s;
+  overflow: hidden;
+}
+.card:hover { box-shadow: var(--shadow-hover); transform: translateY(-3px); }
+.card.hidden { display: none !important; }
+
+.card-img {
+  width: 100%; aspect-ratio: 2/3; max-height: 220px;
+  background: var(--cream); overflow: hidden; position: relative;
+  display: flex; align-items: center; justify-content: center;
+}
+.card-img img {
+  width: 100%; height: 100%; object-fit: cover;
+  display: block; transition: transform .3s;
+}
+.card:hover .card-img img { transform: scale(1.03); }
+.img-ph {
+  display: flex; flex-direction: column; align-items: center;
+  justify-content: center; gap: 6px; width: 100%; height: 100%;
+  position: absolute; inset: 0;
+}
+.img-ph span { font-size: 2.2rem; opacity: .3; }
+.img-ph p { font-family: var(--font-mono); font-size: .68rem; color: var(--muted); letter-spacing: .1em; }
+/* Hide placeholder when image loads */
+.card-img img:not([src=""]) + .img-ph { display: none; }
+
+.card-accent { height: 3px; flex-shrink: 0; }
+
+.card-body { padding: 18px 18px 10px; flex: 1; display: flex; flex-direction: column; gap: 6px; }
+.card-meta-top { display: flex; align-items: center; gap: 8px; }
+.code-pill {
+  font-family: var(--font-mono); font-size: .68rem;
+  color: var(--muted); background: var(--cream);
+  padding: 2px 7px; letter-spacing: .06em;
+}
+.state-badge {
+  font-size: .7rem; font-weight: 600; letter-spacing: .06em;
+  padding: 2px 8px;
+}
+.state-A { color: var(--state-a); background: #eaf4ea; }
+.state-B { color: var(--state-b); background: #e4eff9; }
+.state-D { color: var(--state-d); background: #fef3e2; }
+.state-C { color: var(--state-c); background: #fceaea; }
+
+.card-title {
+  font-family: var(--font-serif); font-size: 1.05rem;
+  font-weight: bold; color: var(--ink); line-height: 1.2;
+}
+.card-author { font-size: .78rem; color: var(--muted); }
+.card-desc { font-size: .84rem; color: #3a3a3a; line-height: 1.65; flex: 1; }
+
+.card-footer {
+  padding: 10px 18px; border-top: 1px solid var(--border);
+  background: var(--paper); display: flex;
+  align-items: center; justify-content: space-between; gap: 8px;
+  flex-wrap: wrap;
+}
+.cat-tag {
+  font-size: .65rem; font-weight: 600; letter-spacing: .09em;
+  text-transform: uppercase; padding: 3px 8px;
+}
+.pages-badge { font-family: var(--font-mono); font-size: .7rem; color: var(--muted); }
+
+/* ── CATEGORY COLORS ── */
+.cat-AUT { color: var(--aut); background: var(--aut-l); }
+.cat-CIE { color: var(--cie); background: var(--cie-l); }
+.cat-CLA { color: var(--cla); background: var(--cla-l); }
+.cat-JUV { color: var(--juv); background: var(--juv-l); }
+.cat-MIS { color: var(--mis); background: var(--mis-l); }
+.cat-NAR { color: var(--nar); background: var(--nar-l); }
+.cat-VAR { color: var(--var); background: var(--var-l); }
+
+.card-accent.cat-AUT { background: var(--aut); }
+.card-accent.cat-CIE { background: var(--cie); }
+.card-accent.cat-CLA { background: var(--cla); }
+.card-accent.cat-JUV { background: var(--juv); }
+.card-accent.cat-MIS { background: var(--mis); }
+.card-accent.cat-NAR { background: var(--nar); }
+.card-accent.cat-VAR { background: var(--var); }
+
+/* ── NO RESULTS ── */
+.no-results {
+  grid-column: 1 / -1; text-align: center;
+  padding: 80px 20px; color: var(--muted);
+}
+.no-results p:first-child { font-size: 3rem; margin-bottom: 12px; }
+.no-results h3 { font-family: var(--font-serif); font-size: 1.4rem; margin-bottom: 8px; }
+.no-results p { font-size: .875rem; }
+.hidden { display: none !important; }
+
+/* ── FOOTER ── */
+.site-footer {
+  background: var(--ink); color: rgba(255,255,255,.35);
+  text-align: center; padding: 28px 20px;
+  font-size: .78rem; line-height: 2; letter-spacing: .04em;
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 768px) {
+  .site-header { padding: 28px 20px 24px; }
+  .header-stats { display: none; }
+  .info-banner { padding: 10px 20px; font-size: .78rem; }
+  .controls { padding: 12px 20px; }
+  .main { padding: 20px 20px 60px; }
+  .grid { grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 14px; }
+}
+
+@media (max-width: 480px) {
+  .grid { grid-template-columns: 1fr; }
+  .filters { gap: 4px; }
+  .filter-btn { font-size: .72rem; padding: 5px 10px; }
+  .count-label { display: none; }
+}
+
+/* ── EXTRAS (generated cards) ── */
+.card-info { font-size: .74rem; color: var(--muted); margin-bottom: 4px; }
+.card-nota { font-size: .78rem; color: #8b1a1a; font-weight: 600; margin-top: 8px; }
+.no-disponible { font-size: .68rem; background: #fceaea; color: #8b1a1a; padding: 2px 7px; font-weight: 600; }
+.filter-count { font-size: .68rem; opacity: .65; margin-left: 2px; }
+
+
+.card-info{font-size:.74rem;color:#666;margin-bottom:4px}
+.card-nota{font-size:.78rem;color:#8b1a1a;font-weight:600;margin-top:8px}
+.no-disponible{font-size:.68rem;background:#fceaea;color:#8b1a1a;padding:2px 7px;font-weight:600}
+.filter-count{font-size:.68rem;opacity:.65;margin-left:2px}
+.cat-INF{color:#6b3a8a;background:#f5eefa}
+.card-accent.cat-INF{background:#6b3a8a}
+.cat-CIV{color:#1a4a4a;background:#e0f2f2}
+.card-accent.cat-CIV{background:#1a4a4a}
+
+</style>
+</head>
+<body>
+<header class="site-header">
+  <div class="header-inner">
+    <div class="header-left">
+      <span class="header-emoji">📚</span>
+      <div>
+        <h1>Biblioteca <em>Escolar</em></h1>
+        <p class="header-sub">Colegio Mixto Forjador de Juventudes · 2026</p>
+      </div>
+    </div>
+    <div class="header-stats">
+      <div class="stat"><span class="stat-num" id="stat-total">—</span><span class="stat-label">Títulos</span></div>
+      <div class="stat"><span class="stat-num" id="stat-cats">—</span><span class="stat-label">Categorías</span></div>
+      <div class="stat"><span class="stat-num">Q5</span><span class="stat-label">Préstamo</span></div>
+    </div>
+  </div>
+</header>
+<div class="info-banner">
+  📋 Acércate a la Biblioteca durante el recreo o después de clases · 5 días hábiles · Q5 al retirar
+</div>
+<div class="controls" id="controls">
+  <div class="controls-inner">
+    <div class="search-wrap">
+      <span class="search-icon">🔍</span>
+      <input type="text" id="search" placeholder="Buscar título, autor o código…" autocomplete="off">
+    </div>
+    <div class="filters" id="filters"></div>
+    <span class="count-label" id="count"></span>
+  </div>
+</div>
+<main class="main">
+  <div class="grid" id="grid">
+    <p style="padding:40px;color:#999;font-style:italic">Cargando catálogo…</p>
+  </div>
+</main>
+<footer class="site-footer">
+  <p>Biblioteca Escolar · Colegio Mixto Forjador de Juventudes · 2026</p>
+  <p>Q5 por préstamo · 5 días hábiles · Servicio independiente, no parte de la colegiatura</p>
+</footer>
+<script>
+
+  /* ─────────────────────────────────────
+   * INFANTIL (nuevo)
+   * ───────────────────────────────────── */
+  {
+    codigo:      "INF-01",
+    titulo:      "¡Buenos días tractorcito!",
+    autor:       "Novelty Ediciones",
+    categoria:   "INF",
+    estado:      "B",
+    paginas:     15,
+    year:        2020,
+    editorial:   "Novelty Ediciones",
+    isbn:        "",
+    copias:      1,
+    disponible:  true,
+    nota:        "",
+    descripcion: "Un libro de cartón lleno de colores y texturas para los más pequeños. El tractorcito saluda cada mañana con energía y entusiasmo. Ideal para despertar el amor por los libros desde muy temprana edad."
+  },
+  {
+    codigo:      "INF-02",
+    titulo:      "Oso y Ratona ¡Buenos días!",
+    autor:       "Nicola Edwards",
+    categoria:   "INF",
+    estado:      "B",
+    paginas:     16,
+    year:        2021,
+    editorial:   "Beascoa",
+    isbn:        "",
+    copias:      1,
+    disponible:  true,
+    nota:        "",
+    descripcion: "Oso y Ratona se despiertan cada mañana con una gran sonrisa. Un libro de páginas resistentes para los más pequeños, lleno de ilustraciones alegres y palabras sencillas para aprender a saludar el día."
+  },
+
+  /* ─────────────────────────────────────
+   * CLÁSICOS — versiones abreviadas y nuevos
+   * ───────────────────────────────────── */
+  {
+    codigo:      "CLA-04",
+    titulo:      "Moby Dick (versión abreviada)",
+    autor:       "Herman Melville",
+    categoria:   "CLA",
+    estado:      "A",
+    paginas:     96,
+    year:        2019,
+    editorial:   "Silver Dolphin",
+    isbn:        "9786075323718",
+    copias:      1,
+    disponible:  true,
+    nota:        "",
+    descripcion: "La legendaria historia del capitán Ahab y su obsesión por cazar a la ballena blanca más temida de los mares. Esta versión abreviada conserva toda la emoción de la novela original en un formato accesible para jóvenes lectores."
+  },
+  {
+    codigo:      "CLA-05",
+    titulo:      "Don Quijote de la Mancha (versión abreviada)",
+    autor:       "Miguel de Cervantes",
+    categoria:   "CLA",
+    estado:      "A",
+    paginas:     94,
+    year:        2019,
+    editorial:   "Silver Dolphin",
+    isbn:        "",
+    copias:      1,
+    disponible:  true,
+    nota:        "",
+    descripcion: "El caballero andante más famoso de la literatura española en una versión adaptada para jóvenes. Las aventuras de Don Quijote y Sancho Panza cobran vida con ilustraciones y un lenguaje cercano sin perder la esencia de la obra original."
+  },
+  {
+    codigo:      "CLA-06",
+    titulo:      "Romeo y Julieta",
+    autor:       "William Shakespeare",
+    categoria:   "CLA",
+    estado:      "A",
+    paginas:     94,
+    year:        2019,
+    editorial:   "Silver Dolphin",
+    isbn:        "9786075323718",
+    copias:      1,
+    disponible:  true,
+    nota:        "",
+    descripcion: "La historia de amor más famosa de todos los tiempos, adaptada para jóvenes lectores. Dos jóvenes de familias enemigas se enamoran en la Verona del siglo XVI. Una versión accesible de la obra maestra de Shakespeare."
+  },
+
+  /* ─────────────────────────────────────
+   * NARRATIVA — nuevos títulos guatemaltecos
+   * ───────────────────────────────────── */
+  {
+    codigo:      "NAR-08",
+    titulo:      "Lunas y noches",
+    autor:       "Manuel Bolom Yaxcal",
+    categoria:   "NAR",
+    estado:      "A",
+    paginas:     30,
+    year:        2015,
+    editorial:   "Diario de Centro América y Tipografía Nacional",
+    isbn:        "9789929560543",
+    copias:      1,
+    disponible:  true,
+    nota:        "",
+    descripcion: "Una colección de poemas que recorre el ciclo de la noche y la luna desde la sensibilidad de la cosmovisión maya. Bolom Yaxcal construye imágenes poéticas que mezclan la naturaleza, el tiempo y la memoria de un pueblo con voz propia."
+  },
+  {
+    codigo:      "NAR-09",
+    titulo:      "La manzana de la discordia",
+    autor:       "Enrique Noriega",
+    categoria:   "NAR",
+    estado:      "A",
+    paginas:     0,
+    year:        "",
+    editorial:   "Tipografía Nacional",
+    isbn:        "",
+    copias:      1,
+    disponible:  true,
+    nota:        "",
+    descripcion: "Una obra narrativa de uno de los escritores guatemaltecos más prolíficos. Noriega teje una historia donde el conflicto y la discordia sirven de motor para explorar las relaciones humanas y las tensiones que definen a una sociedad."
+  },
+  {
+    codigo:      "NAR-10",
+    titulo:      "Fábulas",
+    autor:       "Rafael García Goyena",
+    categoria:   "NAR",
+    estado:      "A",
+    paginas:     204,
+    year:        "",
+    editorial:   "Tipografía Nacional",
+    isbn:        "9789929560697",
+    copias:      1,
+    disponible:  true,
+    nota:        "",
+    descripcion: "Las fábulas de García Goyena son una joya de la literatura guatemalteca del siglo XIX. Con animales como protagonistas, cada historia encierra una moraleja ingeniosa sobre la condición humana, la astucia y la justicia."
+  },
+  {
+    codigo:      "NAR-11",
+    titulo:      "La niña de Guatemala",
+    autor:       "Máximo Soto Hall",
+    categoria:   "NAR",
+    estado:      "A",
+    paginas:     0,
+    year:        "",
+    editorial:   "Tipografía Nacional",
+    isbn:        "9789929560703",
+    copias:      1,
+    disponible:  true,
+    nota:        "",
+    descripcion: "Una novela corta que inmortalizó a María García Granados, la joven que inspiró los versos más famosos de José Martí. Una historia de amor no correspondido narrada con delicadeza y anclada en la historia de Guatemala del siglo XIX."
+  },
+  {
+    codigo:      "NAR-12",
+    titulo:      "Concierto floral en primavera: Poemas",
+    autor:       "Álvaro Enrique Palma Sandoval",
+    categoria:   "NAR",
+    estado:      "A",
+    paginas:     0,
+    year:        1993,
+    editorial:   "",
+    isbn:        "",
+    copias:      1,
+    disponible:  true,
+    nota:        "",
+    descripcion: "Una colección de poemas que celebra la primavera con imágenes florales y musicalidad. Palma Sandoval construye versos llenos de color y vida, donde la naturaleza se convierte en metáfora de los sentimientos más profundos."
+  },
+  {
+    codigo:      "NAR-13",
+    titulo:      "Antes del relámpago — Tomo I",
+    autor:       "Enrique Noriega",
+    categoria:   "NAR",
+    estado:      "A",
+    paginas:     0,
+    year:        "",
+    editorial:   "Editorial Cultura",
+    isbn:        "",
+    copias:      1,
+    disponible:  false,
+    nota:        "⚠ Ejemplar donado — consultar disponibilidad.",
+    descripcion: "Primer tomo de la obra narrativa más ambiciosa de Enrique Noriega. Una exploración profunda de la historia y la identidad guatemalteca a través de personajes que viven en la antesala de grandes cambios sociales y políticos."
+  },
+  {
+    codigo:      "NAR-14",
+    titulo:      "Antes del relámpago — Tomo II",
+    autor:       "Enrique Noriega",
+    categoria:   "NAR",
+    estado:      "A",
+    paginas:     0,
+    year:        "",
+    editorial:   "Editorial Cultura",
+    isbn:        "",
+    copias:      1,
+    disponible:  false,
+    nota:        "⚠ Ejemplar donado — consultar disponibilidad.",
+    descripcion: "Segundo tomo de esta obra fundamental. La historia continúa explorando las tensiones sociales, políticas y humanas de Guatemala, con la misma intensidad narrativa que caracteriza la escritura de Noriega."
+  },
+  {
+    codigo:      "NAR-15",
+    titulo:      "El Quetzal, Colibrí Gigante",
+    autor:       "Enrique Noriega",
+    categoria:   "NAR",
+    estado:      "A",
+    paginas:     432,
+    year:        "",
+    editorial:   "Editorial Cultura",
+    isbn:        "9789993943440",
+    copias:      1,
+    disponible:  false,
+    nota:        "⚠ Ejemplar donado — consultar disponibilidad.",
+    descripcion: "Una obra monumental sobre el ave nacional de Guatemala. Noriega combina investigación, historia y narrativa para trazar el recorrido simbólico del quetzal a través de la cultura, la mitología y la identidad del pueblo guatemalteco."
+  },
+  {
+    codigo:      "NAR-16",
+    titulo:      "Coplas de amor y delirio del alma",
+    autor:       "Plinio Eduardo Cortés",
+    categoria:   "NAR",
+    estado:      "A",
+    paginas:     0,
+    year:        "",
+    editorial:   "",
+    isbn:        "",
+    copias:      1,
+    disponible:  false,
+    nota:        "⚠ Ejemplar donado — consultar disponibilidad.",
+    descripcion: "Una colección de coplas donde el amor y el delirio se entrelazan en versos de musicalidad popular. Cortés recupera la tradición de la copla para hablar del alma humana con humor, ternura y una hondura inesperada."
+  },
+  {
+    codigo:      "NAR-17",
+    titulo:      "El principito",
+    autor:       "Antoine de Saint-Exupéry",
+    categoria:   "NAR",
+    estado:      "A",
+    paginas:     0,
+    year:        "",
+    editorial:   "Piedra Santa",
+    isbn:        "",
+    copias:      1,
+    disponible:  true,
+    nota:        "",
+    descripcion: "Un pequeño príncipe que viaja de planeta en planeta aprende que lo esencial es invisible a los ojos. El libro más leído del mundo después de la Biblia es, a la vez, un cuento para niños y una reflexión para adultos sobre la amistad, el amor y el sentido de la vida."
+  },
+
+  /* ─────────────────────────────────────
+   * CÍVICA / HISTORIA (nueva categoría CIV)
+   * ───────────────────────────────────── */
+  {
+    codigo:      "CIV-01",
+    titulo:      "Constitución Política de la República de Guatemala",
+    autor:       "",
+    categoria:   "CIV",
+    estado:      "A",
+    paginas:     0,
+    year:        "",
+    editorial:   "Diario de Centro América y Tipografía Nacional",
+    isbn:        "",
+    copias:      1,
+    disponible:  true,
+    nota:        "",
+    descripcion: "El documento fundamental que rige la vida jurídica y política de Guatemala. Establece los derechos y deberes de los ciudadanos, la organización del Estado y los principios que garantizan la dignidad de todas las personas. Lectura indispensable para todo ciudadano."
+  },
+  {
+    codigo:      "CIV-02",
+    titulo:      "Barrios: Heroísmo y conciencia de la guatemalidad",
+    autor:       "Amílcar Echeverría",
+    categoria:   "CIV",
+    estado:      "A",
+    paginas:     0,
+    year:        "",
+    editorial:   "Tipografía Nacional",
+    isbn:        "",
+    copias:      1,
+    disponible:  true,
+    nota:        "",
+    descripcion: "Un recorrido por la figura del General Justo Rufino Barrios y su papel en la construcción de la identidad guatemalteca. Echeverría analiza con rigor histórico el legado de uno de los personajes más influyentes y controvertidos de la historia nacional."
+  },
+  {
+    codigo:      "CIV-03",
+    titulo:      "Independencia de Centroamérica",
+    autor:       "",
+    categoria:   "CIV",
+    estado:      "A",
+    paginas:     0,
+    year:        "",
+    editorial:   "",
+    isbn:        "",
+    copias:      1,
+    disponible:  true,
+    nota:        "",
+    descripcion: "Un documento histórico sobre el proceso de independencia de las provincias de Centroamérica del dominio español en 1821. Recorre los antecedentes, los protagonistas y las circunstancias que llevaron a uno de los momentos más importantes de la historia regional."
+  },
+
+
+</script>
+<script>
+
+/* ══════════════════════════════════════════
+   BIBLIOTECA ESCOLAR — app.js
+   ══════════════════════════════════════════ */
+(function () {
+  "use strict";
+  const CATEGORIAS = {
+    AUT: { nombre: "Autoayuda",  emoji: "🧠" },
+    CIE: { nombre: "Ciencia",    emoji: "🔬" },
+    CLA: { nombre: "Clásicos",   emoji: "📜" },
+    JUV: { nombre: "Juvenil",    emoji: "⭐" },
+    MIS: { nombre: "Misterio",   emoji: "🔍" },
+    NAR: { nombre: "Narrativa",  emoji: "📖" },
+    VAR: { nombre: "Varios",     emoji: "📌" },
+    INF: { nombre: "Infantil",   emoji: "🧸" },
+    CIV: { nombre: "Cívica",     emoji: "🏛️" },
+  };
+  const ESTADOS = {
+    A: { label: "Excelente",   color: "#2d6a2d", bg: "#eaf4ea" },
+    B: { label: "Bueno",       color: "#2e75b6", bg: "#e4eff9" },
+    D: { label: "Deteriorado", color: "#b06800", bg: "#fef3e2" },
+    C: { label: "Crítico",     color: "#8b1a1a", bg: "#fceaea" },
+  };
+  let currentFilter = "all";
+  let currentQuery  = "";
+  function esc(str) {
+    return String(str||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
+  }
+  function buildTags(l) {
+    return [l.codigo,l.titulo,l.autor,l.categoria,(CATEGORIAS[l.categoria]||{}).nombre||""].join(" ").toLowerCase();
+  }
+  function cardHTML(l) {
+    const cat=l.categoria, estado=ESTADOS[l.estado]||ESTADOS.A;
+    const copias=l.copias>1?" · "+l.copias+" copias":"";
+    const paginas=l.paginas>0?l.paginas+" págs.":"";
+    const infoParts=[l.editorial,l.year,l.isbn?"ISBN "+l.isbn:""].filter(Boolean);
+    const info=infoParts.join(" · ");
+    const catEmoji=(CATEGORIAS[cat]||{}).emoji||"📚";
+    const catNombre=(CATEGORIAS[cat]||{}).nombre||cat;
+    return "<article class=\"card\" data-cat=\""+esc(cat)+"\" data-tags=\""+esc(buildTags(l))+"\">"+
+      "<div class=\"card-img\">"+
+        "<img src=\"images/portadas/"+esc(l.codigo)+".jpg\" alt=\""+esc(l.titulo)+"\" loading=\"lazy\""+
+          " onerror=\"this.style.display=\\none\;this.nextElementSibling.style.display=\\flex\\">" +
+        "<div class=\"img-ph\" style=\"display:none\"><span>"+catEmoji+"</span><p>"+esc(l.codigo)+"</p></div>"+
+      "</div>"+
+      "<div class=\"card-accent cat-"+esc(cat)+"\"></div>"+
+      "<div class=\"card-body\">"+
+        "<div class=\"card-meta-top\">"+
+          "<span class=\"code-pill\">"+esc(l.codigo)+"</span>"+
+          "<span class=\"state-badge\" style=\"color:"+estado.color+";background:"+estado.bg+"\">● "+esc(l.estado)+" · "+esc(estado.label)+"</span>"+
+          (!l.disponible?"<span class=\"no-disponible\">No disponible</span>":"")+
+        "</div>"+
+        "<h2 class=\"card-title\">"+esc(l.titulo)+"</h2>"+
+        "<p class=\"card-author\">"+esc(l.autor)+esc(copias)+"</p>"+
+        (info?"<p class=\"card-info\">"+esc(info)+"</p>":"")+
+        "<p class=\"card-desc\">"+esc(l.descripcion)+"</p>"+
+        (l.nota?"<p class=\"card-nota\">"+esc(l.nota)+"</p>":"")+
+      "</div>"+
+      "<div class=\"card-footer\">"+
+        "<span class=\"cat-tag cat-"+esc(cat)+"\">"+esc(catNombre)+"</span>"+
+        (paginas?"<span class=\"pages-badge\">"+esc(paginas)+"</span>":"")+
+      "</div>"+
+    "</article>";
+  }
+  function buildFilters() {
+    var counts={all:LIBROS.length};
+    LIBROS.forEach(function(l){counts[l.categoria]=(counts[l.categoria]||0)+1;});
+    var filtersEl=document.getElementById("filters");
+    if(!filtersEl)return;
+    var cats=Object.keys(CATEGORIAS).filter(function(c){return counts[c]>0;});
+    var html="<button class=\"filter-btn active\" data-cat=\"all\">Todos <span class=\"filter-count\">"+counts.all+"</span></button>";
+    cats.forEach(function(cat){
+      var c=CATEGORIAS[cat];
+      html+="<button class=\"filter-btn\" data-cat=\""+cat+"\">"+c.emoji+" "+c.nombre+" <span class=\"filter-count\">"+(counts[cat]||0)+"</span></button>";
+    });
+    filtersEl.innerHTML=html;
+    filtersEl.querySelectorAll(".filter-btn").forEach(function(btn){
+      btn.addEventListener("click",function(){
+        currentFilter=this.dataset.cat;
+        filtersEl.querySelectorAll(".filter-btn").forEach(function(b){b.classList.remove("active");});
+        this.classList.add("active");
+        applyFilters();
+      });
+    });
+  }
+  function updateStats() {
+    var totalEl=document.getElementById("stat-total");
+    var catEl=document.getElementById("stat-cats");
+    if(totalEl)totalEl.textContent=LIBROS.length;
+    if(catEl){var s=new Set(LIBROS.map(function(l){return l.categoria;}));catEl.textContent=s.size;}
+  }
+  function renderGrid() {
+    var grid=document.getElementById("grid");
+    if(!grid)return;
+    var sorted=LIBROS.slice().sort(function(a,b){
+      if(a.categoria<b.categoria)return -1;
+      if(a.categoria>b.categoria)return 1;
+      return a.codigo.localeCompare(b.codigo);
+    });
+    grid.innerHTML=sorted.map(cardHTML).join("")+
+      "<div class=\"no-results hidden\" id=\"no-results\"><p>📭</p><h3>Sin resultados</h3><p>Intenta con otro término o categoría.</p></div>";
+  }
+  function applyFilters() {
+    var cards=Array.from(document.querySelectorAll(".card"));
+    var noResult=document.getElementById("no-results");
+    var visible=0;
+    var needle=currentQuery.toLowerCase();
+    cards.forEach(function(card){
+      var matchesCat=currentFilter==="all"||card.dataset.cat===currentFilter;
+      var matchesQ=!needle||(card.dataset.tags||"").includes(needle);
+      if(matchesCat&&matchesQ){card.classList.remove("hidden");visible++;}
+      else{card.classList.add("hidden");}
+    });
+    var countEl=document.getElementById("count");
+    if(countEl)countEl.textContent=visible+(visible===1?" libro":" libros");
+    if(noResult)noResult.classList.toggle("hidden",visible>0);
+  }
+  function initSearch() {
+    var input=document.getElementById("search");
+    if(!input)return;
+    input.addEventListener("input",function(){currentQuery=this.value.trim();applyFilters();});
+    input.addEventListener("keydown",function(e){if(e.key==="Escape"){this.value="";currentQuery="";applyFilters();}});
+  }
+  function initSticky() {
+    var c=document.getElementById("controls");
+    if(!c)return;
+    window.addEventListener("scroll",function(){c.style.boxShadow=window.scrollY>10?"0 3px 12px rgba(26,18,9,.12)":"0 2px 8px rgba(26,18,9,.06)";},{passive:true});
+  }
+  function init() {
+    if(typeof LIBROS==="undefined"||!Array.isArray(LIBROS)){
+      document.getElementById("grid").innerHTML="<p style=\"padding:40px;color:red\">Error: libros.js no cargó.</p>";return;
+    }
+    updateStats();renderGrid();buildFilters();initSearch();initSticky();applyFilters();
+  }
+  if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded",init);}else{init();}
+})();
+
+</script>
+</body>
+</html>
