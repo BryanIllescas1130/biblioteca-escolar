@@ -1,9 +1,7 @@
 /* ══════════════════════════════════════════
    BIBLIOTECA ESCOLAR — app.js
-   Lee libros.js y construye el catálogo.
-   Sin frameworks. Sin dependencias.
+   Vistas: grid / compact / list
    ══════════════════════════════════════════ */
-
 (function () {
   'use strict';
 
@@ -15,8 +13,8 @@
     MIS: { nombre: 'Misterio',   emoji: '🔍' },
     NAR: { nombre: 'Narrativa',  emoji: '📖' },
     VAR: { nombre: 'Varios',     emoji: '📌' },
-    INF: { nombre: 'Infantil',   emoji: '&#x1F9F8;' },
-    CIV: { nombre: 'Civica',     emoji: '&#x1F3DB;' },
+    INF: { nombre: 'Infantil',   emoji: '🧸' },
+    CIV: { nombre: 'Cívica',     emoji: '🏛️' },
   };
 
   const ESTADOS = {
@@ -26,117 +24,134 @@
     C: { label: 'Crítico',     color: '#8b1a1a', bg: '#fceaea' },
   };
 
+  // ── STATE ──
   let currentFilter = 'all';
   let currentQuery  = '';
+  let currentView   = localStorage.getItem('bib-view') || 'grid';
 
-  function esc(str) {
-    return String(str || '')
+  // ── HELPERS ──
+  function esc(s) {
+    return String(s || '')
       .replace(/&/g, '&amp;').replace(/</g, '&lt;')
       .replace(/>/g, '&gt;').replace(/"/g, '&quot;');
   }
 
-  function buildTags(libro) {
-    return [libro.codigo, libro.titulo, libro.autor, libro.categoria,
-      (CATEGORIAS[libro.categoria] || {}).nombre || ''].join(' ').toLowerCase();
+  function buildTags(l) {
+    return [l.codigo, l.titulo, l.autor, l.categoria,
+      (CATEGORIAS[l.categoria] || {}).nombre || ''].join(' ').toLowerCase();
   }
 
-  function cardHTML(libro) {
-    const cat    = libro.categoria;
-    const estado = ESTADOS[libro.estado] || ESTADOS.A;
-    const copias = libro.copias > 1 ? ' · ' + libro.copias + ' copias' : '';
-    const paginas = libro.paginas > 0 ? libro.paginas + ' págs.' : '';
-    const infoParts = [libro.editorial, libro.year,
-      libro.isbn ? 'ISBN ' + libro.isbn : ''].filter(Boolean);
-    const info = infoParts.join(' · ');
+  // ── CARD HTML ──
+  function cardHTML(l) {
+    const cat      = l.categoria;
+    const estado   = ESTADOS[l.estado] || ESTADOS.A;
+    const copias   = l.copias > 1 ? ' · ' + l.copias + ' copias' : '';
+    const paginas  = l.paginas > 0 ? l.paginas + ' págs.' : '';
+    const info     = [l.editorial, l.year, l.isbn ? 'ISBN ' + l.isbn : ''].filter(Boolean).join(' · ');
     const catEmoji = (CATEGORIAS[cat] || {}).emoji || '📚';
-    const catNombre = (CATEGORIAS[cat] || {}).nombre || cat;
+    const catNom   = (CATEGORIAS[cat] || {}).nombre || cat;
+    const onerr    = "this.style.display='none';this.nextElementSibling.style.display='flex'";
 
-    return '<article class="card" data-cat="' + esc(cat) + '" data-tags="' + esc(buildTags(libro)) + '">' +
+    return '<article class="card" data-cat="' + esc(cat) + '" data-tags="' + esc(buildTags(l)) + '">' +
       '<div class="card-img">' +
-        '<img src="images/portadas/' + esc(libro.codigo) + '.jpg" alt="' + esc(libro.titulo) + '" loading="lazy"' +
-          ' onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'flex\'">' +
-        '<div class="img-ph" style="display:none"><span>' + catEmoji + '</span><p>' + esc(libro.codigo) + '</p></div>' +
+        '<img src="images/portadas/' + esc(l.codigo) + '.jpg" alt="' + esc(l.titulo) + '" loading="lazy" onerror="' + onerr + '">' +
+        '<div class="img-ph" style="display:none"><span>' + catEmoji + '</span><p>' + esc(l.codigo) + '</p></div>' +
       '</div>' +
       '<div class="card-accent cat-' + esc(cat) + '"></div>' +
       '<div class="card-body">' +
         '<div class="card-meta-top">' +
-          '<span class="code-pill">' + esc(libro.codigo) + '</span>' +
-          '<span class="state-badge" style="color:' + estado.color + ';background:' + estado.bg + '">' +
-            '● ' + esc(libro.estado) + ' · ' + esc(estado.label) +
-          '</span>' +
-          (!libro.disponible ? '<span class="no-disponible">No disponible</span>' : '') +
+          '<span class="code-pill">' + esc(l.codigo) + '</span>' +
+          '<span class="state-badge state-' + esc(l.estado) + '">' + esc(l.estado) + ' · ' + esc(estado.label) + '</span>' +
+          (!l.disponible ? '<span class="no-disponible">No disponible</span>' : '') +
         '</div>' +
-        '<h2 class="card-title">' + esc(libro.titulo) + '</h2>' +
-        '<p class="card-author">' + esc(libro.autor) + esc(copias) + '</p>' +
+        '<h2 class="card-title">' + esc(l.titulo) + '</h2>' +
+        '<p class="card-author">' + esc(l.autor) + esc(copias) + '</p>' +
         (info ? '<p class="card-info">' + esc(info) + '</p>' : '') +
-        '<p class="card-desc">' + esc(libro.descripcion) + '</p>' +
-        (libro.nota ? '<p class="card-nota">' + esc(libro.nota) + '</p>' : '') +
+        '<p class="card-desc">' + esc(l.descripcion) + '</p>' +
+        (l.nota ? '<p class="card-nota">' + esc(l.nota) + '</p>' : '') +
       '</div>' +
       '<div class="card-footer">' +
-        '<span class="cat-tag cat-' + esc(cat) + '">' + esc(catNombre) + '</span>' +
+        '<span class="cat-tag cat-' + esc(cat) + '">' + esc(catNom) + '</span>' +
         (paginas ? '<span class="pages-badge">' + esc(paginas) + '</span>' : '') +
       '</div>' +
     '</article>';
   }
 
+  // ── VIEW SWITCHER ──
+  window.setView = function (view) {
+    currentView = view;
+    localStorage.setItem('bib-view', view);
+
+    var grid = document.getElementById('grid');
+    grid.className = 'grid view-' + view;
+
+    ['grid', 'compact', 'list'].forEach(function (v) {
+      var btn = document.getElementById('btn-' + v);
+      if (btn) btn.classList.toggle('active', v === view);
+    });
+  };
+
+  // ── FILTERS ──
   function buildFilters() {
     var counts = { all: LIBROS.length };
-    LIBROS.forEach(function(l) { counts[l.categoria] = (counts[l.categoria] || 0) + 1; });
+    LIBROS.forEach(function (l) { counts[l.categoria] = (counts[l.categoria] || 0) + 1; });
 
-    var filtersEl = document.getElementById('filters');
-    if (!filtersEl) return;
+    var el = document.getElementById('filters');
+    if (!el) return;
 
-    var cats = Object.keys(CATEGORIAS).filter(function(c) { return counts[c] > 0; });
+    var cats = Object.keys(CATEGORIAS).filter(function (c) { return counts[c] > 0; });
     var html = '<button class="filter-btn active" data-cat="all">Todos <span class="filter-count">' + counts.all + '</span></button>';
-    cats.forEach(function(cat) {
+    cats.forEach(function (cat) {
       var c = CATEGORIAS[cat];
-      html += '<button class="filter-btn" data-cat="' + cat + '">' + c.emoji + ' ' + c.nombre +
-        ' <span class="filter-count">' + counts[cat] + '</span></button>';
+      html += '<button class="filter-btn" data-cat="' + cat + '">' +
+        c.emoji + ' ' + c.nombre + ' <span class="filter-count">' + (counts[cat] || 0) + '</span></button>';
     });
-    filtersEl.innerHTML = html;
+    el.innerHTML = html;
 
-    filtersEl.querySelectorAll('.filter-btn').forEach(function(btn) {
-      btn.addEventListener('click', function() {
+    el.querySelectorAll('.filter-btn').forEach(function (btn) {
+      btn.addEventListener('click', function () {
         currentFilter = this.dataset.cat;
-        filtersEl.querySelectorAll('.filter-btn').forEach(function(b) { b.classList.remove('active'); });
+        el.querySelectorAll('.filter-btn').forEach(function (b) { b.classList.remove('active'); });
         this.classList.add('active');
         applyFilters();
       });
     });
   }
 
+  // ── STATS ──
   function updateStats() {
-    var totalEl = document.getElementById('stat-total');
-    var catEl   = document.getElementById('stat-cats');
-    if (totalEl) totalEl.textContent = LIBROS.length;
-    if (catEl) {
-      var activeCats = new Set(LIBROS.map(function(l) { return l.categoria; }));
-      catEl.textContent = activeCats.size;
-    }
+    var t = document.getElementById('stat-total');
+    var c = document.getElementById('stat-cats');
+    if (t) t.textContent = LIBROS.length;
+    if (c) { var s = new Set(LIBROS.map(function (l) { return l.categoria; })); c.textContent = s.size; }
   }
 
+  // ── RENDER ──
   function renderGrid() {
     var grid = document.getElementById('grid');
     if (!grid) return;
-    var sorted = LIBROS.slice().sort(function(a, b) {
+
+    var sorted = LIBROS.slice().sort(function (a, b) {
       if (a.categoria < b.categoria) return -1;
       if (a.categoria > b.categoria) return 1;
       return a.codigo.localeCompare(b.codigo);
     });
+
     grid.innerHTML = sorted.map(cardHTML).join('') +
       '<div class="no-results hidden" id="no-results"><p>📭</p><h3>Sin resultados</h3><p>Intenta con otro término o categoría.</p></div>';
   }
 
+  // ── FILTER ──
   function applyFilters() {
     var cards    = Array.from(document.querySelectorAll('.card'));
     var noResult = document.getElementById('no-results');
     var visible  = 0;
     var needle   = currentQuery.toLowerCase();
 
-    cards.forEach(function(card) {
-      var matchesCat = currentFilter === 'all' || card.dataset.cat === currentFilter;
-      var matchesQ   = !needle || (card.dataset.tags || '').includes(needle);
-      if (matchesCat && matchesQ) { card.classList.remove('hidden'); visible++; }
+    cards.forEach(function (card) {
+      var mc = currentFilter === 'all' || card.dataset.cat === currentFilter;
+      var mq = !needle || (card.dataset.tags || '').includes(needle);
+      if (mc && mq) { card.classList.remove('hidden'); visible++; }
       else { card.classList.add('hidden'); }
     });
 
@@ -145,35 +160,47 @@
     if (noResult) noResult.classList.toggle('hidden', visible > 0);
   }
 
+  // ── SEARCH ──
   function initSearch() {
     var input = document.getElementById('search');
     if (!input) return;
-    input.addEventListener('input', function() { currentQuery = this.value.trim(); applyFilters(); });
-    input.addEventListener('keydown', function(e) {
+    input.addEventListener('input', function () { currentQuery = this.value.trim(); applyFilters(); });
+    input.addEventListener('keydown', function (e) {
       if (e.key === 'Escape') { this.value = ''; currentQuery = ''; applyFilters(); }
     });
   }
 
+  // ── STICKY ──
   function initSticky() {
-    var controls = document.getElementById('controls');
-    if (!controls) return;
-    window.addEventListener('scroll', function() {
-      controls.style.boxShadow = window.scrollY > 10
-        ? '0 3px 12px rgba(26,18,9,.12)' : '0 2px 8px rgba(26,18,9,.06)';
+    var c = document.getElementById('controls');
+    if (!c) return;
+    window.addEventListener('scroll', function () {
+      c.style.boxShadow = window.scrollY > 10 ? '0 3px 12px rgba(26,18,9,.12)' : '0 2px 8px rgba(26,18,9,.06)';
     }, { passive: true });
   }
 
+  // ── DETECT MOBILE → default list on small screens ──
+  function detectDefaultView() {
+    var saved = localStorage.getItem('bib-view');
+    if (!saved) {
+      currentView = window.innerWidth <= 480 ? 'list' : 'grid';
+    }
+  }
+
+  // ── INIT ──
   function init() {
     if (typeof LIBROS === 'undefined' || !Array.isArray(LIBROS)) {
-      document.getElementById('grid').innerHTML =
-        '<p style="padding:40px;color:red">Error: libros.js no está cargado.</p>';
+      var g = document.getElementById('grid');
+      if (g) g.innerHTML = '<p style="padding:40px;color:red">Error: libros.js no está cargado.</p>';
       return;
     }
+    detectDefaultView();
     updateStats();
     renderGrid();
     buildFilters();
     initSearch();
     initSticky();
+    setView(currentView);
     applyFilters();
   }
 
