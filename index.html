@@ -37,16 +37,18 @@
       <span class="search-icon">🔍</span>
       <input type="text" id="search" placeholder="Buscar título, autor o código…" autocomplete="off">
     </div>
-    <div class="filters" id="filters">
-      <!-- Generado automáticamente por app.js -->
+    <div class="filters" id="filters"></div>
+    <div class="view-toggle">
+      <button class="view-btn active" id="btn-grid"    onclick="setView('grid')"    title="Portadas grandes">⊞</button>
+      <button class="view-btn"        id="btn-compact" onclick="setView('compact')" title="Portadas pequeñas">⊟</button>
+      <button class="view-btn"        id="btn-list"    onclick="setView('list')"    title="Lista">≡</button>
     </div>
     <span class="count-label" id="count"></span>
   </div>
 </div>
 
 <main class="main">
-  <div class="grid" id="grid">
-    <!-- Generado automáticamente por app.js desde libros.js -->
+  <div class="grid view-grid" id="grid">
     <p style="padding:40px;color:#999;font-style:italic">Cargando catálogo…</p>
   </div>
 </main>
@@ -56,7 +58,6 @@
   <p>Q5 por préstamo · 5 días hábiles · Servicio independiente, no parte de la colegiatura</p>
 </footer>
 
-<!-- DATOS primero, luego lógica -->
 <script src="js/libros.js"></script>
 <script src="js/app.js"></script>
 
