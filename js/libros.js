@@ -193,6 +193,51 @@ const LIBROS = [
     nota:        "",
     descripcion: "Escrita por el único guatemalteco Premio Nobel de Literatura, esta novela retrata la brutalidad de una dictadura sin nombre pero con rostro muy reconocible. El miedo, la traición y el poder absoluto son los protagonistas reales. Imprescindible para entender la historia política de América Latina."
   },
+   {
+    codigo:      "CLA-04",
+    titulo:      "Moby Dick (version abreviada)",
+    autor:       "Herman Melville",
+    categoria:   "CLA",
+    estado:      "A",
+    paginas:     96,
+    year:        2019,
+    editorial:   "Silver Dolphin",
+    isbn:        "9786075323718",
+    copias:      1,
+    disponible:  true,
+    nota:        "",
+    descripcion: "La legendaria historia del capitan Ahab y su obsesion por cazar a la ballena blanca. Esta version abreviada conserva toda la emocion de la novela original en un formato accesible para jovenes lectores."
+  },
+  {
+    codigo:      "CLA-05",
+    titulo:      "Don Quijote de la Mancha (version abreviada)",
+    autor:       "Miguel de Cervantes",
+    categoria:   "CLA",
+    estado:      "A",
+    paginas:     94,
+    year:        2019,
+    editorial:   "Silver Dolphin",
+    isbn:        "",
+    copias:      1,
+    disponible:  true,
+    nota:        "",
+    descripcion: "El caballero andante mas famoso de la literatura espanola en una version adaptada para jovenes. Las aventuras de Don Quijote y Sancho Panza con ilustraciones y lenguaje cercano."
+  },
+  {
+    codigo:      "CLA-06",
+    titulo:      "Romeo y Julieta (version abreviada)",
+    autor:       "William Shakespeare",
+    categoria:   "CLA",
+    estado:      "A",
+    paginas:     94,
+    year:        2019,
+    editorial:   "Silver Dolphin",
+    isbn:        "",
+    copias:      1,
+    disponible:  true,
+    nota:        "",
+    descripcion: "La historia de amor mas famosa de todos los tiempos, adaptada para jovenes lectores. Dos jovenes de familias enemigas se enamoran en la Verona del siglo XVI."
+  },
 
   /* ─────────────────────────────────────
    * JUVENIL
@@ -445,129 +490,7 @@ const LIBROS = [
     nota:        "⚠ Consultar disponibilidad con el responsable.",
     descripcion: "Una colección de relatos que exploran el conflicto armado guatemalteco desde perspectivas íntimas: no la del general ni la del político, sino la de las personas atrapadas en medio. Un testimonio literario de valor histórico."
   },
-
-  /* ─────────────────────────────────────
-   * VARIOS
-   * ───────────────────────────────────── */
-  {
-    codigo:      "VAR-01",
-    titulo:      "El jarrón azul",
-    autor:       "Sin definir",
-    categoria:   "VAR",
-    estado:      "D",
-    paginas:     42,
-    year:        "",
-    editorial:   "",
-    isbn:        "",
-    copias:      1,
-    disponible:  true,
-    nota:        "",
-    descripcion: "Una historia breve sobre un jarrón azul que pasa de mano en mano, revelando poco a poco las vidas de quienes lo poseyeron. Un libro pequeño con una idea grande: los objetos guardan la memoria de las personas."
-  },
-  {
-    codigo:      "VAR-02",
-    titulo:      "Pasión Fútbol",
-    autor:       "Jonathan Tulloch",
-    categoria:   "VAR",
-    estado:      "D",
-    paginas:     275,
-    year:        "",
-    editorial:   "Alfaguara serie roja",
-    isbn:        "",
-    copias:      1,
-    disponible:  true,
-    nota:        "",
-    descripcion: "Gemma no encaja en su nueva ciudad y no sabe qué hacer con su rabia. Hasta que descubre el fútbol, y con él, una comunidad de personas que tampoco encajan en ningún otro lado. Una novela sobre identidad y pertenencia que no necesita que te guste el fútbol para atraparte."
-  },
-
-
-  /* ─────────────────────────────────────
-   * INFANTIL
-   * ───────────────────────────────────── */
-  {
-    codigo:      "INF-01",
-    titulo:      "Buenos dias tractorcito",
-    autor:       "Novelty Ediciones",
-    categoria:   "INF",
-    estado:      "B",
-    paginas:     15,
-    year:        2020,
-    editorial:   "Novelty Ediciones",
-    isbn:        "",
-    copias:      1,
-    disponible:  true,
-    nota:        "",
-    descripcion: "Un libro de carton lleno de colores y texturas para los mas pequenos. El tractorcito saluda cada manana con energia. Ideal para despertar el amor por los libros desde muy temprana edad."
-  },
-  {
-    codigo:      "INF-02",
-    titulo:      "Oso y Ratona Buenos dias",
-    autor:       "Nicola Edwards",
-    categoria:   "INF",
-    estado:      "B",
-    paginas:     16,
-    year:        2021,
-    editorial:   "Beascoa",
-    isbn:        "",
-    copias:      1,
-    disponible:  true,
-    nota:        "",
-    descripcion: "Oso y Ratona se despiertan cada manana con una gran sonrisa. Un libro de paginas resistentes para los mas pequenos, lleno de ilustraciones alegres para aprender a saludar el dia."
-  },
-
-  /* ─────────────────────────────────────
-   * CLASICOS — nuevos
-   * ───────────────────────────────────── */
-  {
-    codigo:      "CLA-04",
-    titulo:      "Moby Dick (version abreviada)",
-    autor:       "Herman Melville",
-    categoria:   "CLA",
-    estado:      "A",
-    paginas:     96,
-    year:        2019,
-    editorial:   "Silver Dolphin",
-    isbn:        "9786075323718",
-    copias:      1,
-    disponible:  true,
-    nota:        "",
-    descripcion: "La legendaria historia del capitan Ahab y su obsesion por cazar a la ballena blanca. Esta version abreviada conserva toda la emocion de la novela original en un formato accesible para jovenes lectores."
-  },
-  {
-    codigo:      "CLA-05",
-    titulo:      "Don Quijote de la Mancha (version abreviada)",
-    autor:       "Miguel de Cervantes",
-    categoria:   "CLA",
-    estado:      "A",
-    paginas:     94,
-    year:        2019,
-    editorial:   "Silver Dolphin",
-    isbn:        "",
-    copias:      1,
-    disponible:  true,
-    nota:        "",
-    descripcion: "El caballero andante mas famoso de la literatura espanola en una version adaptada para jovenes. Las aventuras de Don Quijote y Sancho Panza con ilustraciones y lenguaje cercano."
-  },
-  {
-    codigo:      "CLA-06",
-    titulo:      "Romeo y Julieta",
-    autor:       "William Shakespeare",
-    categoria:   "CLA",
-    estado:      "A",
-    paginas:     94,
-    year:        2019,
-    editorial:   "Silver Dolphin",
-    isbn:        "",
-    copias:      1,
-    disponible:  true,
-    nota:        "",
-    descripcion: "La historia de amor mas famosa de todos los tiempos, adaptada para jovenes lectores. Dos jovenes de familias enemigas se enamoran en la Verona del siglo XVI."
-  },
-
-  /* ─────────────────────────────────────
-   * NARRATIVA — nuevos
-   * ───────────────────────────────────── */
-  {
+   {
     codigo:      "NAR-08",
     titulo:      "Lunas y noches",
     autor:       "Manuel Bolom Yaxcal",
@@ -614,7 +537,7 @@ const LIBROS = [
   },
   {
     codigo:      "NAR-11",
-    titulo:      "La nina de Guatemala",
+    titulo:      "La niña de Guatemala",
     autor:       "Maximo Soto Hall",
     categoria:   "NAR",
     estado:      "A",
@@ -654,7 +577,7 @@ const LIBROS = [
     isbn:        "",
     copias:      1,
     disponible:  false,
-    nota:        "Ejemplar donado - consultar disponibilidad.",
+    nota:        "",
     descripcion: "Primer tomo de la obra narrativa mas ambiciosa de Enrique Noriega. Una exploracion de la historia y la identidad guatemalteca a traves de personajes que viven en la antesala de grandes cambios."
   },
   {
@@ -669,7 +592,7 @@ const LIBROS = [
     isbn:        "",
     copias:      1,
     disponible:  false,
-    nota:        "Ejemplar donado - consultar disponibilidad.",
+    nota:        "",
     descripcion: "Segundo tomo de esta obra fundamental. La historia continua explorando las tensiones sociales y politicas de Guatemala con la misma intensidad narrativa que caracteriza a Noriega."
   },
   {
@@ -684,7 +607,7 @@ const LIBROS = [
     isbn:        "9789993943440",
     copias:      1,
     disponible:  false,
-    nota:        "Ejemplar donado - consultar disponibilidad.",
+    nota:        "",
     descripcion: "Una obra monumental sobre el ave nacional de Guatemala. Noriega combina investigacion, historia y narrativa para trazar el recorrido simbolico del quetzal en la cultura guatemalteca."
   },
   {
@@ -699,7 +622,7 @@ const LIBROS = [
     isbn:        "",
     copias:      1,
     disponible:  false,
-    nota:        "Ejemplar donado - consultar disponibilidad.",
+    nota:        "",
     descripcion: "Una coleccion de coplas donde el amor y el delirio se entrelazan en versos de musicalidad popular. Cortes recupera la tradicion de la copla para hablar del alma con humor y ternura."
   },
   {
@@ -718,6 +641,75 @@ const LIBROS = [
     descripcion: "Un pequeno principe viaja de planeta en planeta aprendiendo que lo esencial es invisible a los ojos. A la vez un cuento para ninos y una reflexion para adultos sobre la amistad y el sentido de la vida."
   },
 
+
+  /* ─────────────────────────────────────
+   * VARIOS
+   * ───────────────────────────────────── */
+  {
+    codigo:      "VAR-01",
+    titulo:      "El jarrón azul",
+    autor:       "Sin definir",
+    categoria:   "VAR",
+    estado:      "D",
+    paginas:     42,
+    year:        "",
+    editorial:   "",
+    isbn:        "",
+    copias:      1,
+    disponible:  true,
+    nota:        "",
+    descripcion: "Una historia breve sobre un jarrón azul que pasa de mano en mano, revelando poco a poco las vidas de quienes lo poseyeron. Un libro pequeño con una idea grande: los objetos guardan la memoria de las personas."
+  },
+  {
+    codigo:      "VAR-02",
+    titulo:      "Pasión Fútbol",
+    autor:       "Jonathan Tulloch",
+    categoria:   "VAR",
+    estado:      "D",
+    paginas:     275,
+    year:        "",
+    editorial:   "Alfaguara serie roja",
+    isbn:        "",
+    copias:      1,
+    disponible:  true,
+    nota:        "",
+    descripcion: "Gemma no encaja en su nueva ciudad y no sabe qué hacer con su rabia. Hasta que descubre el fútbol, y con él, una comunidad de personas que tampoco encajan en ningún otro lado. Una novela sobre identidad y pertenencia que no necesita que te guste el fútbol para atraparte."
+  },
+
+
+  /* ─────────────────────────────────────
+   * INFANTIL
+   * ───────────────────────────────────── */
+  {
+    codigo:      "INF-01",
+    titulo:      "¡Buenos días tractorcito!",
+    autor:       "Novelty Ediciones",
+    categoria:   "INF",
+    estado:      "B",
+    paginas:     15,
+    year:        2020,
+    editorial:   "Novelty Ediciones",
+    isbn:        "",
+    copias:      1,
+    disponible:  true,
+    nota:        "",
+    descripcion: "Un libro de carton lleno de colores y texturas para los mas pequenos. El tractorcito saluda cada manana con energia. Ideal para despertar el amor por los libros desde muy temprana edad."
+  },
+  {
+    codigo:      "INF-02",
+    titulo:      "¡Oso y Ratona Buenos días!",
+    autor:       "Nicola Edwards",
+    categoria:   "INF",
+    estado:      "B",
+    paginas:     16,
+    year:        2021,
+    editorial:   "Beascoa",
+    isbn:        "",
+    copias:      1,
+    disponible:  true,
+    nota:        "",
+    descripcion: "Oso y Ratona se despiertan cada manana con una gran sonrisa. Un libro de paginas resistentes para los mas pequenos, lleno de ilustraciones alegres para aprender a saludar el dia."
+  },
   /* ─────────────────────────────────────
    * CIVICA
    * ───────────────────────────────────── */
