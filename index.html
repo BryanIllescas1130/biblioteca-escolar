@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Catálogo Biblioteca Escolar — Colegio Mixto Forjador de Juventudes">
+<title>Biblioteca Escolar — Forjador de Juventudes</title>
+<link rel="stylesheet" href="css/style.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📚</text></svg>">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-inner">
+    <div class="header-left">
+      <span class="header-emoji">📚</span>
+      <div>
+        <h1>Biblioteca <em>Escolar</em></h1>
+        <p class="header-sub">Colegio Mixto Forjador de Juventudes · 2026</p>
+      </div>
+    </div>
+    <div class="header-stats">
+      <div class="stat"><span class="stat-num" id="stat-total">—</span><span class="stat-label">Títulos</span></div>
+      <div class="stat"><span class="stat-num" id="stat-cats">—</span><span class="stat-label">Categorías</span></div>
+      <div class="stat"><span class="stat-num">Q5</span><span class="stat-label">Préstamo</span></div>
+    </div>
+  </div>
+</header>
+
+<div class="info-banner">
+  📋 Acércate a la Biblioteca durante el recreo o después de clases · 5 días hábiles · Q5 al retirar
+</div>
+
+<div class="controls" id="controls">
+  <div class="controls-inner">
+    <div class="search-wrap">
+      <span class="search-icon">🔍</span>
+      <input type="text" id="search" placeholder="Buscar título, autor o código…" autocomplete="off">
+    </div>
+    <div class="filters" id="filters">
+      <!-- Generado automáticamente por app.js -->
+    </div>
+    <span class="count-label" id="count"></span>
+  </div>
+</div>
+
+<main class="main">
+  <div class="grid" id="grid">
+    <!-- Generado automáticamente por app.js desde libros.js -->
+    <p style="padding:40px;color:#999;font-style:italic">Cargando catálogo…</p>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <p>Biblioteca Escolar · Colegio Mixto Forjador de Juventudes · 2026</p>
+  <p>Q5 por préstamo · 5 días hábiles · Servicio independiente, no parte de la colegiatura</p>
+</footer>
+
+<!-- DATOS primero, luego lógica -->
+<script src="js/libros.js"></script>
+<script src="js/app.js"></script>
+
+</body>
+</html>
